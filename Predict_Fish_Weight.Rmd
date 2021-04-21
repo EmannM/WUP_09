@@ -115,13 +115,59 @@ The summary above shows that the best model of all for predicting the weight of 
 ## Bream model
   
 ```{r}
-breamModel <- lm(Weight ~ Length2 + Height , data = Bream)
+breamModel <- lm(Weight ~ Length2 + Height, data = Bream)
 summary.lm(breamModel)
 ```  
   
-The numerical summary of the linear model of Length2 + Height above shows a residual standard error of 53.1 (how far the standard deviation of the model is from that of the normal curve), multiple R-squared of 0.9394 (which means that this model has a strong linear relationship between the two regressors since it is close to 1), and adjusted R-squared of 0.9356 (which is very good since it means that about 94% of the mean model error is explained with this model). This is the best 2-regressor model for predicting the weight of Perch because its R-squared is the highest.  
+The numerical summary of the linear model of Length2 + Height above shows a residual standard error of 53.1 (how far the standard deviation of the model is from that of the normal curve), multiple R-squared of 0.9394 (which means that this model has a strong linear relationship between the two regressors since it is close to 1), and adjusted R-squared of 0.9356 (which is very good since it means that about 94% of the mean model error is explained with this model). This is the best 2-regressor model for predicting the weight of Bream because its R-squared is the highest.  
   
 # Smelt  
+  
+```{r include = FALSE}
+Smelt <- subset(allFish, Species == "Smelt")
+Smelt <- select(Smelt, -Species)
+```  
+  
+## Adjusted R-squared 
+  
+```{r}
+library(leaps)
+regsubsets.out <-
+    regsubsets(Weight ~ .,
+               data = Smelt,
+               nbest = 1,       # 1 best model for each number of predictors
+               nvmax = NULL,    # NULL for no limit on number of variables
+               force.in = NULL, force.out = NULL,
+               method = "exhaustive")
+
+summary.out <- summary(regsubsets.out)
+as.data.frame(summary.out$outmat)
+subsets(regsubsets.out,statistic="adjr2",legend="bottomright",main="Adjusted R^2")
+```  
+  
+The adjusted R-squared plot above shows that the best 2-regressor model for predicting the weight of Smelt is L2-W (Length2 and Width), since it has the highest adjusted R-squared of any other 2-regressor model (0.9645).
+  
+## Which is best? 
+  
+```{r}
+which.max(summary.out$adjr2)
+```  
+  
+```{r}
+summary.out$which[2,]
+```    
+  
+The summary above shows that the best model of all for predicting the weight of Smelt is L1-L2-H-W (Length1, Length2, Height, and Width). Yet, within the context of this report, we are only interested in the best 2-regressor model for this prediction, so L2-W (Length2 and width) is therefore the best one.  
+  
+## Smelt model
+  
+```{r}
+smeltModel <- lm(Weight ~ Length2 + Width, data = Smelt)
+summary.lm(smeltModel)
+```   
+  
+The numerical summary of the linear model of Length2 + Width above shows a residual standard error of 0.7783 (how far the standard deviation of the model is from that of the normal curve), multiple R-squared of 0.97 (which means that this model has a strong linear relationship between the two regressors since it is close to 1), and adjusted R-squared of 0.9645 (which is very good since it means that about 96% of the mean model error is explained with this model). This is the best 2-regressor model for predicting the weight of Smelt because its R-squared is the highest.  
+  
   
   
   
