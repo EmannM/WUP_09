@@ -25,6 +25,8 @@ levels(allFish$Species)
 
 <!--In this section you explain what you are trying to show.  Where did the data come from?  What is the research or other question you are trying to answer?!-->
   
+In this report, we will be attempting to show the best 2-regressor model for predicting the weight of Perch, the best 2-regressor model for predicting the weight of Bream, and the the best 2-regressor model for predicting the weight of Smelt. The data to be used comes from the "Fish.csv" data set, with focus on the species Perch, Bream, and Smelt. We will be attempting to answer this research question: What is the best 2-regressor model for predicting the weight of Perch, Bream, and Smelt, respectively?
+  
 ## Build the best regression model you can that predicts the weight of perch
 ## Using only two predictor variables  
   
